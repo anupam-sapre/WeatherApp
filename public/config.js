@@ -5,7 +5,7 @@
     function Config($routeProvider) {
         $routeProvider
             .when("/home", {
-                templateUrl: "views/user/weatherForecast.html",
+                templateUrl: "views/user/home.html",
                 controller: "HomeController",
                 controllerAs: "model"
             })
