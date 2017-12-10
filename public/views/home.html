@@ -32,18 +32,16 @@
         map.addListener('click', function(e) {
             placeMarkerAndPanTo(e.latLng, map);
         });
+        var latlng = new google.maps.LatLng(42.339831, -71.089182);
+        marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+        });
     }
 
     function placeMarkerAndPanTo(latLng, map) {
-        if(marker){
-            marker.setPosition(latLng);;
-        }else{
-            marker = new google.maps.Marker({
-                position: latLng,
-                map: map
-            });
-        }
 
+        marker.setPosition(latLng);
         map.panTo(latLng);
     }
 </script>
