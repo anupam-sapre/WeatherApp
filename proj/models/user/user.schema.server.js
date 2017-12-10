@@ -1,6 +1,5 @@
 module.exports = function() {
     var mongoose = require("mongoose");
-    var JobSchema = require("./../job/job.schema.server.js");
     var UserSchema = mongoose.Schema({
         username: {type: String, required: true},
         password: String,
