@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/anupam-sapre/WeatherApp/issues"
   },
-  "homepage": "https://github.com/anupam-sapre/WeatherApp#readme"
+  "homepage": "https://github.com/anupam-sapre/WeatherApp#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
