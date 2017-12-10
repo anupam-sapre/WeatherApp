@@ -5,8 +5,6 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 module.exports = function(app,models) {
 
-    var multer = require('multer');
-    var upload = multer({ dest: __dirname+'/../../public/uploads' });
     var projUserModel = models.projUserModel;
 
     app.post("/proj/user", createUser);
@@ -17,9 +15,6 @@ module.exports = function(app,models) {
     app.post("/proj/login", passport.authenticate('localNew'), login);
     app.post ('/proj/register', register);
     app.get ('/proj/loggedin', loggedin);
-
-    app.post ("/proj/uploadResume", upload.single('myResume'), uploadResume);
-
 
     app.get('/auth/google',passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login'] }));
     app.get('/auth/google/callback', passport.authenticate('google', {
