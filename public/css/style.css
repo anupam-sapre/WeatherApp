@@ -14,3 +14,7 @@ p.navbar-text.pull-right {
 p.navbar-text.pull-left {
     margin-left: 15px;
 }
+#map {
+    height: 400px;
+    width: 100%;
+}
