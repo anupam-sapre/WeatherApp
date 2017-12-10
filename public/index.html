@@ -20,33 +20,6 @@
     <title>WeatherApp</title>
 </head>
 <body>
-<script>
-    var marker;
-    function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 4,
-            center: {lat: 42.339831, lng: -71.089182 }
-        });
-
-        map.addListener('click', function(e) {
-            placeMarkerAndPanTo(e.latLng, map);
-        });
-        var latlng = new google.maps.LatLng(42.339831, -71.089182);
-        marker = new google.maps.Marker({
-            position: latLng,
-            map: map
-        });
-    }
-
-    function placeMarkerAndPanTo(latLng, map) {
-
-        marker.setPosition(latLng);
-        map.panTo(latLng);
-    }
-</script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYJPXomWReTVFgUwGZ3IdJTVo9z9lcWMA&callback=initMap">
-</script>
 <div ng-view></div>
 </body>
 </html>
