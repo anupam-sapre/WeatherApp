@@ -28,7 +28,7 @@ if(process.env.MLAB_USER_WEATHER) {
 var mongoose = require('mongoose');
 mongoose.connect(connectionString);
 
-require("./project/app.js")(app);
+require("./proj/app.js")(app);
 
 //var ipaddress = process.env.OPENSHIFT_NODEJS_IP;
 var port      = process.env.PORT || 3000;
