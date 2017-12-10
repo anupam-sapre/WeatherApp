@@ -22,10 +22,11 @@
 
 </div>
 <script>
+    var marker;
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 4,
-            center: {lat: -25.363882, lng: 131.044922 }
+            center: {lat: 42.3601, lng: 71.0589 }
         });
 
         map.addListener('click', function(e) {
@@ -34,10 +35,15 @@
     }
 
     function placeMarkerAndPanTo(latLng, map) {
-        var marker = new google.maps.Marker({
-            position: latLng,
-            map: map
-        });
+        if(marker){
+            marker.setPosition(latLng);;
+        }else{
+            marker = new google.maps.Marker({
+                position: latLng,
+                map: map
+            });
+        }
+
         map.panTo(latLng);
     }
 </script>
