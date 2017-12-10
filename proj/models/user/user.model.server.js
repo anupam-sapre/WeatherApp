@@ -9,8 +9,7 @@ module.exports = function() {
         findUserByCredentials:findUserByCredentials,
         findUserById:findUserById,
         findUserByUsername:findUserByUsername,
-        findUserByGoogleId:findUserByGoogleId,
-        findAllUsersByUsername:findAllUsersByUsername
+        findUserByGoogleId:findUserByGoogleId
     };
     return api;
 
@@ -28,11 +27,6 @@ module.exports = function() {
     function findUserByUsername(username) {
         return User.findOne({username:username});
     }
-
-    function findAllUsersByUsername(username) {
-        return User.find({username: new RegExp('^'+username+'$', "i")});
-    }
-
     function findUserByGoogleId(googleId) {
         return User.findOne({'google.id': googleId});
     }
