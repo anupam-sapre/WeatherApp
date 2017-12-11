@@ -16,6 +16,7 @@
             UserService
                 .findWeather(lat, lng)
                 .then(function (response) {
+                        console.log(response.data)
                         vm.weatherData = response.data
                         $location.url("/weather");
 
