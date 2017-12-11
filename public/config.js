@@ -19,6 +19,11 @@
                 controller: "RegisterController",
                 controllerAs: "model"
             })
+            .when("/weather", {
+                templateUrl: "views/weather.html",
+                controller: "WeatherController",
+                controllerAs: "model"
+            })
             .otherwise({
                 redirectTo: "/home"
             });

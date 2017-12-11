@@ -11,7 +11,8 @@
             findUserById:findUserById,
             login:login,
             logout:logout,
-            register: register
+            register: register,
+            findWeather: findWeather
         };
         return api;
 
@@ -50,6 +51,11 @@
                 password: password
             };
             return $http.post("/proj/register", user);
+        }
+        
+        function findWeather(lat,long) {
+            var url ='https://api.darksky.net/forecast/573bed4ceaabeb4e99f4846ec84b05ad/'+lat+','+long;
+            return $http.get('https://cors-asapre.herokuapp.com/'+url);
         }
     }
 })();

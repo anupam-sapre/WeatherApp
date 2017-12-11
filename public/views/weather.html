@@ -1,5 +1,3 @@
-
-
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -16,14 +14,6 @@
     </div>
 </nav>
 <div class="container">
-    <div ng-if="model.error" class="alert alert-danger">
-        {{model.error}}
-    </div>
-    <h1>Weather Forecast</h1>
-    <input ng-model="model.searchInput" class="form-control" type="text"
-           g-places-autocomplete id="searchInput" placeholder="Location" >
-    <a class="btn btn-primary btn-block" ng-click="model.searchWeather(model.searchInput)">Get Weather Fore Cast</a>
-
+    <input ng-model="weatherData" type="text"
+           class="form-control"/>
 </div>
-
-
