@@ -49,19 +49,31 @@
     </div>
     <div class="form-group row">
         <a class="btn btn-primary btn-block" ng-click="model.showHistory()"
-           id="showHistory" ng-model="model.viewHistory">Show Search History</a>
+           id="showHistory" ng-model="model.viewHistory">Show History</a>
     </div>
 
     <div id="history" ng-model="history" ng-hide="model.toggleFlag">
             <div class="row row-padding top-buffer" ng-repeat="addr in model.historyResultAddr track by $index">
                 <a ng-click="model.updateFields(addr,model.historyResultTime[$index])">
 
-                    <div class="col-xs-4"> {{addr}}</div>
-                    <div class="col-xs-4"> {{model.historyResultTime[$index]}} </div>
+                    <div class="col-xs-6"> {{addr}}</div>
+                    <div class="col-xs-6"> {{model.historyResultTime[$index]}} </div>
 
                 </a>
             </div>
     </div>
+
+    <div ng-if="model.generateGraphFlag">
+        <h2>Current Weather </h2>
+        <div class="col-xs-4">{{model.currentTemp}}°F</div>
+        <div class="col-xs-4">{{model.summary}}</div>
+        <div class="col-xs-4">{{model.currentTime}}</div>
+    </div>
+    <canvas id="icon" width="64" height="64"></canvas>
+    &nbsp;
+
+    <nvd3 options="model.options" data="model.data" config="{disabled:!model.generateGraphFlag }"> </nvd3>
+
 
 </div>
 
