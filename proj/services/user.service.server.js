@@ -15,7 +15,6 @@ module.exports = function(app,models) {
     app.post("/proj/login", passport.authenticate('localNew'), login);
     app.post ('/proj/register', register);
     app.get ('/proj/loggedin', loggedin);
-
     app.get('/auth/google',passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login'] }));
     app.get('/auth/google/callback', passport.authenticate('google', {
         successRedirect: '/project/#/user',
@@ -209,5 +208,7 @@ module.exports = function(app,models) {
     function loggedin(req, res) {
         res.send(req.isAuthenticated() ? req.user : '0');
     }
+
+
 
 };

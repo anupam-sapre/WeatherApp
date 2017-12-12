@@ -7,7 +7,8 @@
             .when("/home", {
                 templateUrl: "views/home.html",
                 controller: "HomeController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: { loggedin: checkLoggedin }
             })
             .when("/login", {
                 templateUrl: "views/login.html",
@@ -17,11 +18,6 @@
             .when("/register", {
                 templateUrl: "views/register.html",
                 controller: "RegisterController",
-                controllerAs: "model"
-            })
-            .when("/weather", {
-                templateUrl: "views/weather.html",
-                controller: "WeatherController",
                 controllerAs: "model"
             })
             .otherwise({
@@ -37,8 +33,8 @@
                     deferred.resolve();
                 } else {
                     $rootScope.currentUser=null;
-                    deferred.reject();
-                    $location.url('/');
+                    deferred.resolve();
+                    //$location.url('/');
                 }
             });
             return deferred.promise;

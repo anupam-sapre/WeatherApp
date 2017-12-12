@@ -6,9 +6,15 @@
             <a class="navbar-brand">
                 Weather Forecast
             </a>
-            <p class="navbar-text pull-right">
-                <a class="navbar-link" href="#/login">
-                  <span class="	glyphicon glyphicon-log-in">
+            <p class="navbar-text stick-to-right">
+                <a class="navbar-link" ng-click="model.checkLogIn()" ng-if="!model.currUser">
+                    Log In
+                  <span class="	glyphicon glyphicon-log-in" >
+                  </span>
+                </a>
+                <a class="navbar-link" ng-click="model.logout()" ng-if="model.currUser">
+                    Log Out
+                  <span class="	glyphicon glyphicon-log-out" >
                   </span>
                 </a>
             </p>
@@ -19,10 +25,43 @@
     <div ng-if="model.error" class="alert alert-danger">
         {{model.error}}
     </div>
-    <h1>Weather Forecast</h1>
-    <input ng-model="model.searchInput" class="form-control" type="text"
-           g-places-autocomplete id="searchInput" placeholder="Location" >
-    <a class="btn btn-primary btn-block" ng-click="model.searchWeather(model.searchInput)">Get Weather Fore Cast</a>
+    <div class="form-group row">
+    <h2 >Weather Forecast</h2>
+    </div>
+    <div class="form-group row">
+        <label for="searchInput" class="col-2 col-form-label">Location</label>
+        <div class="col-10">
+            <input ng-model="model.searchInput" class="form-control" type="text"
+                   g-places-autocomplete id="searchInput" placeholder="Location ex. Boston ,MA" >
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <label for="searchDate">Time</label>
+        <div class="col-10">
+            <input date-time class="form-control" ng-model="model.searchDate" id="searchDate">
+        </div>
+    </div>
+    <div class="form-group row">
+    <a class="btn btn-primary btn-block"
+       ng-click="model.searchWeather(model.searchInput,model.searchDate)">Get Weather Forecast</a>
+    </div>
+    <div class="form-group row">
+        <a class="btn btn-primary btn-block" ng-click="model.showHistory()"
+           id="showHistory" ng-model="model.viewHistory">Show Search History</a>
+    </div>
+
+    <div id="history" ng-model="history" ng-hide="model.toggleFlag">
+            <div class="row row-padding top-buffer" ng-repeat="addr in model.historyResultAddr track by $index">
+                <a ng-click="model.updateFields(addr,model.historyResultTime[$index])">
+
+                    <div class="col-xs-4"> {{addr}}</div>
+                    <div class="col-xs-4"> {{model.historyResultTime[$index]}} </div>
+
+                </a>
+            </div>
+    </div>
 
 </div>
 

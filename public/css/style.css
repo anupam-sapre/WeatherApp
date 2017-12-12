@@ -1,5 +1,6 @@
 input.form-control {
     margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 body {
@@ -13,6 +14,27 @@ p.navbar-text.pull-right {
 
 p.navbar-text.pull-left {
     margin-left: 15px;
+}
+
+@media screen and (max-width: 400px) {
+    #one {
+        float: none;
+        margin-right: 0;
+        width: auto;
+    }
+}
+.navbar-header{
+    float: none ;
+}
+
+.pull-right{
+    float:right;
+}
+
+.stick-to-right{
+    float: right!important;
+    margin: 15px 0px;
+    padding-right: 5px;
 }
 #map {
     height: 400px;

@@ -30,7 +30,7 @@
                         .then(function (response) {
                                 var user = response.data;
                                 $rootScope.currentUser = user;
-                               // $location.url("/user");
+                                $location.url("/login");
                                 /*
                                  if (user) {
                                  $location.url("/user");
