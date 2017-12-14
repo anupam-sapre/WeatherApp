@@ -3,7 +3,6 @@
         .module("WeatherApp")
         .controller("RegisterController",RegisterController);
 
-
     function RegisterController($routeParams,UserService,$location, $rootScope) {
         var vm =this;
         vm.register = register;
@@ -48,8 +47,5 @@
             }
         }
     }
-
-
-
 
 })();

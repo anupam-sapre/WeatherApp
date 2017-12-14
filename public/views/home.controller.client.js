@@ -12,11 +12,9 @@
         vm.logout = logout
         vm.generateGraph = generateGraph;
         vm.showCurrentWeather = showCurrentWeather
-
         vm.generateGraphFlag = false;
         vm.placeError = false;
         vm.timeError = false;
-
 
         function init() {
             vm.currUser =$rootScope.currentUser;
@@ -48,24 +46,22 @@
                 if(!isFunction(place.geometry.location.lat)){
                      lat = place.geometry.location.lat;
                      lng = place.geometry.location.lng;
-
                 }else{
                      lat = place.geometry.location.lat();
                      lng = place.geometry.location.lng();
                 }
-
                 var unixTime = moment(time).unix()
                 var curr = moment().unix()
                 var diff = curr- unixTime
                 if(diff< 180 && diff > 0){
                     currRequest=true
                 }
+
                 generateGraph(lat,lng,time)
                 UserService
                     .findWeather(lat, lng,unixTime,currRequest)
                     .then(function (response) {
                             console.log(response.data)
-
                             vm.data = [
                                 {
                                     values: vm.maxTemp,      //values - represents the array of {x,y} data points
@@ -87,8 +83,6 @@
                                             vm.success = "Added successfully";
                                             vm.toggleFlag=true
                                             showHistory();
-
-
                                         }
                                         , function (err) {
                                             vm.error = "Unable to save history";
@@ -100,7 +94,6 @@
                         });
             }
         }
-
 
         function checkLogIn() {
             if(!vm.currUser){
@@ -160,7 +153,6 @@
                 )
         }
 
-
         function showCurrentWeather(data) {
             vm.hourWeather=[]
             vm.currentIcon = getSkycon(data.currently.icon)
@@ -188,10 +180,6 @@
 
         }
 
-
-
-
-
         function generateGraph(lat,lng,time) {
             vm.minTemp=[]
             vm.maxTemp=[]
@@ -211,9 +199,6 @@
 
             }
         }
-
-
-
 
         vm.options = {
             chart: {
@@ -249,9 +234,6 @@
             var getType = {};
             return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
         }
-
-
-
 
     }
 })();

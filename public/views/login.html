@@ -1,3 +1,15 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="#" >
+                <img src="http://bit.ly/2C59aTr" class="navbar-brand" >
+            </a>
+            <a class="navbar-brand">
+                Weather Forecast
+            </a>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div ng-if="model.error" class="alert alert-danger">
         {{model.error}}
@@ -15,8 +27,8 @@
     </div>
     <a ng-click="model.login(username,password)"
        class="btn btn-primary btn-block font-styles">Login</a>
-    <a class="btn btn-success btn-block font-styles"
+    <a class="btn btn-primary btn-block font-styles"
        href="#/register">Register</a>
-    <a class="btn btn-danger  btn-block "
+    <a class="btn btn-primary  btn-block "
        href="#/home">Cancel</a>
 </div>

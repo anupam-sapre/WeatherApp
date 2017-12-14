@@ -4,7 +4,6 @@
         .controller("LoginController",LoginController);
 
     function LoginController($location,UserService,$rootScope) {
-
         var vm = this;
         vm.userError = false;
         vm.passError = false;
@@ -36,6 +35,5 @@
                     });
             }
         }
-
     }
 })();
