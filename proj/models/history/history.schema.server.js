@@ -5,6 +5,7 @@ module.exports = function() {
         latitude: [String],
         longitude:[String],
         address:[String],
+        placeid:[String],
         timestamp: [String],
         dateCreated: {type: Date, default: Date.now}
     }, {collection: "proj.history"});

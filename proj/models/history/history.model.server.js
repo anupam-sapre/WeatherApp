@@ -30,10 +30,11 @@ module.exports = function() {
         return History
             .update({_user: userId},{
                 $push: {
-                    latitude: hist.latitude[0],
-                    longitude: hist.longitude[0],
-                    timestamp: hist.timestamp[0],
-                    address: hist.address[0]
+                    latitude: hist.latitude,
+                    longitude: hist.longitude,
+                    timestamp: hist.timestamp,
+                    address: hist.address,
+                    placeid:hist.placeid
                 }
             });
 

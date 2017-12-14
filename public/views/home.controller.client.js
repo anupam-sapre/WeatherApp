@@ -19,9 +19,9 @@
 
 
         function init() {
+            vm.currUser =$rootScope.currentUser;
             vm.searchHistory=[];
             vm.searchDate = moment().format('LLLL');
-            vm.searchInput =""
             vm.toggleFlag =true
             vm.minTemp=[]
             vm.maxTemp=[]
@@ -32,8 +32,8 @@
         function searchWeather(place,time){
             vm.placeError = false;
             vm.timeError = false;
-            if(!place){
-                vm.error="Location is required";
+            if(!place || !place.geometry){
+                vm.error="Valid Location is required";
                 vm.placeError = true;
             }else if(!time){
                 vm.error="Time is required";
@@ -42,23 +42,38 @@
             else {
                 vm.error=""
                 console.log(place)
-                var lat = place.geometry.location.lat();
-                var lng = place.geometry.location.lng();
+                var lat;
+                var lng;
+                var currRequest=false;
+                if(!isFunction(place.geometry.location.lat)){
+                     lat = place.geometry.location.lat;
+                     lng = place.geometry.location.lng;
+
+                }else{
+                     lat = place.geometry.location.lat();
+                     lng = place.geometry.location.lng();
+                }
+
                 var unixTime = moment(time).unix()
+                var curr = moment().unix()
+                var diff = curr- unixTime
+                if(diff< 180 && diff > 0){
+                    currRequest=true
+                }
                 generateGraph(lat,lng,time)
                 UserService
-                    .findWeather(lat, lng,unixTime)
+                    .findWeather(lat, lng,unixTime,currRequest)
                     .then(function (response) {
                             console.log(response.data)
 
                             vm.data = [
                                 {
-                                    values: vm.maxTemp.sort(function(a,b) {return (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0);}),      //values - represents the array of {x,y} data points
+                                    values: vm.maxTemp,      //values - represents the array of {x,y} data points
                                     key: 'Max Temperature', //key  - the name of the series.
                                     color: '#ff7f0e'  //color - optional: choose your own line color.
                                 },
                                 {
-                                    values: vm.minTemp.sort(function(a,b) {return (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0);}),
+                                    values: vm.minTemp,
                                     key: 'Min Temperature',
                                     color: '#2ca02c'
                                 }
@@ -66,7 +81,7 @@
                             vm.generateGraphFlag=true;
                             showCurrentWeather(response.data)
                             if(vm.currUser) {
-                                UserService.addHistory(vm.currUser._id, lat, lng, moment(time).format('LLLL'),place.formatted_address)
+                                UserService.addHistory(vm.currUser._id, lat, lng, moment(time).format('LLLL'),place.place_id,place.formatted_address)
                                     .then(
                                         function (response) {
                                             vm.success = "Added successfully";
@@ -104,6 +119,7 @@
                         function (response) {
                             vm.historyResultAddr = response.data[0].address;
                             vm.historyResultTime = response.data[0].timestamp;
+                            vm.historyResultPlaceId = response.data[0].placeid;
                         }
                         , function (err) {
                             vm.error = "Unable to show history";
@@ -120,8 +136,14 @@
         }
 
         function updateFields(address,time) {
-            vm.searchDate = moment(time).format('LLLL')
-            vm.searchInput = address
+            UserService.fetchPlace(address).then(
+                function (response) {
+                    vm.searchDate = moment(time).format('LLLL')
+                    vm.searchInput= response.data.result
+                },function (err) {
+                    vm.searchDate = moment(time).format('LLLL')
+                }
+            )
         }
 
         function logout() {
@@ -140,45 +162,29 @@
 
 
         function showCurrentWeather(data) {
-
-            var icons = new Skycons({"color": "Black"});
-            switch(data.currently.icon){
-                case 'clear-day':
-                    icons.add("icon", Skycons.CLEAR_DAY);
-                    break;
-                case 'clear-night':
-                    icons.add("icon", Skycons.CLEAR_NIGHT);
-                    break;
-                case 'partly-cloudy-day':
-                    icons.add("icon", Skycons.PARTLY_CLOUDY_DAY);
-                    break;
-                case 'partly-cloudy-night':
-                    icons.add("icon", Skycons.PARTLY_CLOUDY_NIGHT);
-                    break;
-                case 'cloudy':
-                    icons.add("icon", Skycons.CLOUDY);
-                    break;
-                case 'rain':
-                    icons.add("icon", Skycons.RAIN);
-                    break;
-                case 'sleet':
-                    icons.add("icon", Skycons.SLEET);
-                    break;
-                case 'snow':
-                    icons.add("icon", Skycons.SNOW);
-                    break;
-                case 'wind':
-                    icons.add("icon", Skycons.WIND);
-                    break;
-                case 'fog':
-                    icons.add("icon", Skycons.FOG);
-                    break;
-
-            }
-            icons.play();
+            vm.hourWeather=[]
+            vm.currentIcon = getSkycon(data.currently.icon)
             vm.currentTemp = data.currently.temperature
             vm.summary = data.currently.summary
             vm.currentTime = moment.unix(data.currently.time).format('LLLL')
+            var icon,temp,summary,time;
+            var count =6;
+            for(i =0;i<24;i++){
+                var dat = data.hourly.data[i]
+                if(count>0 && dat.time > data.currently.time) {
+                    icon = getSkycon(dat.icon)
+                    temp = dat.temperature
+                    summary = dat.summary
+                    time = moment.unix(dat.time).format("LLLL")
+                    vm.hourWeather.push({
+                        icon: icon,
+                        currentTemp: temp,
+                        summary: summary,
+                        currentTime: time
+                    })
+                    count--;
+                }
+            }
 
         }
 
@@ -192,10 +198,12 @@
             for(i=1;i<=10    ;i++){
                 var newTime = moment(time).subtract(i, 'years').unix()
                 UserService
-                    .findWeather(lat, lng,newTime)
+                    .findWeather(lat, lng,newTime,false)
                     .then(function (response) {
                             vm.maxTemp.push({x:moment.unix(response.data.currently.time).year(),y:response.data.daily.data[0].temperatureHigh})
+                            vm.maxTemp.sort(function(a,b) {return (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0);})
                             vm.minTemp.push({x:moment.unix(response.data.currently.time).year(),y:response.data.daily.data[0].temperatureMin})
+                            vm.minTemp.sort(function(a,b) {return (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0);})
                         },
                         function (err) {
                             vm.error = "Please try after some time";
@@ -237,6 +245,10 @@
 
         };
 
+        function isFunction(functionToCheck) {
+            var getType = {};
+            return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+        }
 
 
 

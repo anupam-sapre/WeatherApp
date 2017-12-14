@@ -14,7 +14,8 @@
             register: register,
             findWeather: findWeather,
             addHistory: addHistory,
-            findHistory:findHistory
+            findHistory:findHistory,
+            fetchPlace:fetchPlace
 
         };
         return api;
@@ -55,17 +56,23 @@
             return $http.post("/proj/register", user);
         }
         
-        function findWeather(lat,long,time) {
-            var url ='https://api.darksky.net/forecast/573bed4ceaabeb4e99f4846ec84b05ad/'+lat+','+long+','+time;
-            return $http.get('https://cors-asapre.herokuapp.com/'+url);
+        function findWeather(lat,long,time,current) {
+            if (current){
+                var url ='https://api.darksky.net/forecast/573bed4ceaabeb4e99f4846ec84b05ad/'+lat+','+long;
+                return $http.get('https://cors-asapre.herokuapp.com/'+url);
+            }else {
+                var url = 'https://api.darksky.net/forecast/573bed4ceaabeb4e99f4846ec84b05ad/' + lat + ',' + long + ',' + time;
+                return $http.get('https://cors-asapre.herokuapp.com/' + url);
+            }
         }
 
-        function addHistory(id,lat,long,time,address) {
+        function addHistory(id,lat,long,time,placeid,address) {
             var history = {
-                latitude: [lat],
-                longitude: [long],
-                timestamp: [time],
-                address:[address]
+                latitude: lat,
+                longitude: long,
+                timestamp: time,
+                address:address,
+                placeid:placeid
             };
             return $http.post("/proj/addHistory/"+id,history);
 
@@ -73,6 +80,11 @@
 
         function findHistory(id) {
             return $http.get("/proj/searchHistory/"+id);
+        }
+        
+        function fetchPlace(placeId) {
+            var url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ placeId +"&key=AIzaSyCQqTnznE0toeAVJKVzttPYAG29kMTIOUM";
+            return $http.get('https://cors-asapre.herokuapp.com/'+url);
         }
     }
 })();

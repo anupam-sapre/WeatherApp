@@ -54,10 +54,11 @@
 
     <div id="history" ng-model="history" ng-hide="model.toggleFlag">
             <div class="row row-padding top-buffer" ng-repeat="addr in model.historyResultAddr track by $index">
-                <a ng-click="model.updateFields(addr,model.historyResultTime[$index])">
+                <a ng-click="model.updateFields(model.historyResultPlaceId[$index],model.historyResultTime[$index])">
 
                     <div class="col-xs-6"> {{addr}}</div>
                     <div class="col-xs-6"> {{model.historyResultTime[$index]}} </div>
+                    <div style="display: none;">{{model.historyResultPlaceId[$index]}}</div>
 
                 </a>
             </div>
@@ -65,14 +66,28 @@
 
     <div ng-if="model.generateGraphFlag">
         <h2>Current Weather </h2>
-        <div class="col-xs-4">{{model.currentTemp}}°F</div>
-        <div class="col-xs-4">{{model.summary}}</div>
-        <div class="col-xs-4">{{model.currentTime}}</div>
+        <div class="col-xs-12">{{model.currentTemp}}°F</div>
+        <div class="col-xs-12">{{model.summary}}</div>
+        <div class="col-xs-12">{{model.currentTime}}</div>
+        <skycon icon="model.currentIcon" ></skycon>
+        &nbsp;
+        <h2>Forecast</h2>
+        <div class="row row-padding">
+            <div class="top-buffer" ng-repeat="hour in model.hourWeather track by $index">
+                <div class="col-xs-2">
+                <div class="col-xs-12">{{hour.currentTemp}}°F</div>
+                <div class="col-xs-12">{{hour.summary}}</div>
+                <div class="col-xs-12">{{hour.currentTime}}</div>
+                <skycon icon="hour.icon" ></skycon>
+                </div>
+            </div>
+        </div>
+        &nbsp;
+        <h2>Past Weather</h2>
+        <nvd3 options="model.options" data="model.data" config="{disabled:!model.generateGraphFlag }"> </nvd3>
     </div>
-    <canvas id="icon" width="64" height="64"></canvas>
-    &nbsp;
+    <!--<canvas id="icon" width="64" height="64"></canvas>-->
 
-    <nvd3 options="model.options" data="model.data" config="{disabled:!model.generateGraphFlag }"> </nvd3>
 
 
 </div>
